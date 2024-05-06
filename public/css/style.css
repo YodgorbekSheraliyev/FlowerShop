@@ -1,0 +1,182 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 20px;
+}
+body {
+    background-color:blueviolet;
+}
+a, button {
+    text-decoration: nonde;
+
+}
+ul {
+    list-style: none;
+}
+button {
+    border: none;
+    outline: none;
+}
+
+.container {
+    /* border: 1px solid black; */
+    max-width: 90vw;
+    margin: 0 auto;
+    padding: 1rem;
+}
+.flowershop_title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    width: 270px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background: rgba(243, 217, 217, 0.616);
+    border-radius: 1rem;
+
+}
+.card:hover {
+    transition: all 0.3s ease;
+    box-shadow: 0 0 5px 5px grey;
+}
+.card img {
+    width: inherit;
+    height: 170px;
+    object-position: center;
+    background-position: center;
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
+    box-sizing: border-box;
+
+}
+
+.card-body,.card-footer, .comment_section {
+    padding: 0.5rem;
+}
+.card-footer a {
+    display: inline-block;
+    font-size: 0.7rem;
+    padding: 0.3rem;
+    border-radius: 5px;
+    color: #fff;
+}
+.buy_btn {
+    background-color: green;
+}
+.comment_btn {
+    background-color: rgb(0, 153, 255);
+}
+.comment_btn:hover {
+    cursor: pointer;
+}
+.comment_section {
+    display: none;
+}
+.comment_section.active {
+    display: block;
+}
+.comment_form {
+    display: block;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    margin: 0.rem 0 0 0;
+}
+.comment {
+    display: block;
+    margin: left;
+    width: 80%;
+    box-sizing: border-box;
+    border-radius: 5px;
+    outline: none;
+    padding: 5px;
+    resize: none;
+}
+.comment_send-btn {
+    font-size: 0.7rem;
+    padding: 5px;
+    border-radius: 5px ;
+    background-color: gold;
+    color: #fff;
+}
+
+.buttons_wrapper {
+    display: flex;
+    justify-content: center;
+    column-gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+.buttons_wrapper button {
+    padding: 0.3rem 0.7rem;
+    color: #fff;
+    background-color: rgb(73, 73, 212);
+    border-radius: 5px;
+}
+.buttons_wrapper button:active{
+    transform: scale(0.95);
+}
+button:disabled{
+    background-color: rgba(73, 73, 212, 0.492);
+}
+
+.single-wrapper {
+    display: flex;
+    gap: 2rem;
+    box-sizing: border-box;
+    width: auto;
+}
+
+.detail-wrapper {
+    width: 70%;
+    /* background: green; */
+}
+.card-img-top {
+    width: 100%;
+}
+.buy-form {
+    width: 35%;
+    position: relative;
+}
+.buy-form-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+.buy-form label, input {
+    display: block;
+    margin-bottom: 0.1rem;
+}
+
+.buy-form input {
+    padding: 8px 15px;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid grey;
+    outline: none;
+}
+.error-message {
+    background-color: rgba(235, 95, 95, 0.603);
+    border-radius: 5px;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    right: 1rem;
+}
+
+.buy-btn {
+    font-style: 1px ;
+}

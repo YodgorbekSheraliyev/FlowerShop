@@ -1,0 +1,54 @@
+<div class="single-wrapper container">
+  <div class="detail-wrapper">
+    <img src="{{flower.imageUrl}}" class="card-img-top" alt="..." />
+    <div class="single-detail">
+      <h5 class="detail-title"> {{flower.title}} </h5>
+      <p class="detail-text"> {{flower.description}} </p>
+      <p class="detail-text"><b>Mavjud:</b> {{flower.amount}} dona </p>
+      <p class="detail-text"><b>Price:</b> {{flower.price}} so'm</p>
+  
+    </div>
+    <h3>Izohlar</h3> 
+  </div>
+  <form action="/flower/buy/{{flower.id}}" class="buy-form" method="post" enctype="application/x-www-form-urlencoded">
+  <h2 class="buy-form-title">Sotib olish uchun formani to'ldiring</h2>
+  {{#if error}}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  Barchasini to'ldiring
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+  {{/if}}
+    <label for="fullName">Fullname</label>
+    <input
+      type="text"
+      name="fullName"
+      id="fullName"
+      placeholder="John Doe"
+    />
+     <label for="fullName">Phone</label>
+    <input
+      type="phone"
+      name="phoneNumber"
+      id="phoneNumber"
+      value="+998"
+    />
+    <label for="region">Region</label>
+    <select name="region" id="region" class="form-select" aria-label="Default select example">
+      <option selected>Manzilingizni tanlang</option>
+      <option value="Andijan">Andijan</option>
+      <option value="Buxoro">Buxoro</option>
+      <option value="Fergana">Fergana</option>
+      <option value="Jizzax">Jizzax</option>
+      <option value="Namangan">Namangan</option>
+      <option value="Navoiy">Navoiy</option>
+      <option value="Qashqadaryo">Qashqadaryo</option>
+      <option value="Samarqand">Samarqand</option>
+      <option value="Sirdaryo">Sirdaryo</option>
+      <option value="Surxondaryo">Surxondaryo</option>
+      <option value="Tashkent">Tashkent</option>
+      <option value="Xorazm">Xorazm</option>
+    </select>
+    {{!-- <button type="submit" class="buy-btn">Buy</button> --}}
+    <button type="submit" class="buy-btn btn btn-primary mt-3">Sotib olish</button>
+  </form>
+</div>

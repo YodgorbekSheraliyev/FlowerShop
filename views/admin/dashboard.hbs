@@ -1,0 +1,48 @@
+<div class="container">
+   <nav class="navbar bg-body-tertiary bg-body-secondary">
+  <div class="container-fluid p-0 ">
+    <span class="navbar-brand mb-0 fs-1 fw-bolder">Dashboard</span>
+  </div>
+</nav>
+
+    <table class="table table-bordered table-striped table-responsive table-light">
+            <thead >
+              <tr>
+                <td>Raqam</td>
+                <td>ID</td>
+                <td>Nomi</td>
+                <td>Miqdori</td>
+                <td>Narxi</td>
+                <td>Buyurtmalar</td>
+                <td>Boshqarish</td>
+            </tr>
+            <tr>
+              <td>Jami</td>
+              <td colspan="7"> 50</td>
+            </tr>
+            </thead>
+            <tbody>
+              {{#each flowers}}
+               <tr>
+                <td></td>
+               <td> {{id}}</td>
+               <td> {{title}}</td>
+               <td> {{amount}}</td>
+               <td> {{price}}</td>
+               <td> {{reservations.amount}}</td>
+               <td class=" d-flex justify-content-center gap-2">
+                <form action="/admins/flower/edit" method="get">
+                  <button type="submit" class="btn p-1 btn-success">Tahrirlash</button>
+                  {{!-- <form action="" method="post">
+
+                  </form> --}}
+                </form>
+                <form action="/admins/flower/delete/:{{id}}" method="post">
+                  <button type="submit" class="btn p-1 btn-danger ">O'chirish</button>
+                </form>
+               </td>
+               </tr>
+            {{/each}}
+            </tbody>
+    </table>
+</div>
