@@ -1,7 +1,9 @@
 <div class="container">
    <nav class="navbar bg-body-tertiary bg-body-secondary">
   <div class="container-fluid p-0 ">
+    <a href="/flowers/all" class=" fs-1">Bosh sahifa</a>
     <span class="navbar-brand mb-0 fs-1 fw-bolder">Dashboard</span>
+    <button  class="btn btn-primary add_flower-btn">+ Qo'shish</button>
   </div>
 </nav>
 
@@ -16,12 +18,9 @@
                 <td>Buyurtmalar</td>
                 <td>Boshqarish</td>
             </tr>
-            <tr>
-              <td>Jami</td>
-              <td colspan="7"> 50</td>
-            </tr>
+            
             </thead>
-            <tbody>
+            <tbody class="admin_tbody">
               {{#each flowers}}
                <tr>
                 <td></td>
@@ -33,9 +32,6 @@
                <td class=" d-flex justify-content-center gap-2">
                 <form action="/admins/flower/edit" method="get">
                   <button type="submit" class="btn p-1 btn-success">Tahrirlash</button>
-                  {{!-- <form action="" method="post">
-
-                  </form> --}}
                 </form>
                 <form action="/admins/flower/delete/:{{id}}" method="post">
                   <button type="submit" class="btn p-1 btn-danger ">O'chirish</button>
@@ -44,5 +40,9 @@
                </tr>
             {{/each}}
             </tbody>
+            <tr>
+              <td colspan="3">Jami</td>
+              <td colspan="4"> 50</td>
+            </tr>
     </table>
 </div>

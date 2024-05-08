@@ -5,22 +5,17 @@
     <div class="wrapper">
         {{#each flowers}}
             <div class="card">
-               <img src="{{imageUrl}}" alt="flower">
+               <img src="{{imageUrl}}" class=" card-img-top" alt="flower">
                 <section class="card-body">
                     <h5 class="card-title"> {{title}} </h5>
                     <p class="card-text"><b>Mavjud: </b> {{amount}} </p>
-                    <p class="card-text"><b>Narx: </b> {{price}} </p>
+                    <p class="card-text pb-0"><b>Narx: </b> {{price}} </p>
                 </section>
                 <section class="card-footer">
                     <a href="/flowers/buy/{{id}}" class="buy_btn text-decoration-none">Xarid qilish</a>
                     <a class="comment_btn text-decoration-none" data-id="{{id}}">Izoh qoldirish</a>
                 </section>
-                {{!-- <section class="comment_section">
-                    <form action="/flowers/comment/{{id}}" class="comment_form" enctype="application/x-www-form-urlencoded">
-                      <textarea name="comment" id="comment" class="comment" ></textarea>
-                      <button type="submit" class="comment_send-btn">Jo'natish</button>
-                    </form>
-                </section> --}}
+
             </div>
         {{/each}}
     </div>

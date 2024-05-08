@@ -1,8 +1,10 @@
 const { Router } = require("express");
 const router = Router();
 const db = require("../models");
+const { where } = require("sequelize");
 const Admin = db.admin;
 const Flower = db.flower;
+const Reservation = db.reservation
 
 router.get("/admins/auth/login", async (req, res) => {
   res.render("admins/auth/login", {
@@ -45,7 +47,7 @@ router.post("/admins/auth/register", async (req, res) => {
 router.post('/admins/flower/create', async(req, res) => {
   const {title, imageUrl, description, amount, price, status} = await req.body
   const flower = await Flower.create(req.body, {returning: true})
-  return res.status(201).send(flower)
+  return res.status(201).redirect('/admins/dashboard')
 })
 
 router.delete('/admins/flower/delete/:id', async(req, res) => {
@@ -56,10 +58,26 @@ router.delete('/admins/flower/delete/:id', async(req, res) => {
 
 router.get('/admins/dashboard', async (req, res) => {
   const flowers = await Flower.findAll({raw: true, include: ["reservations"], nest: true})
-console.log(flowers)
+  const allFlowersCount = await Flower.count()
+  const soldFlowers = await Flower.findAll({raw: true, where: {status: "delivered"}})
+  let overallSum = 0
+
+
+  // const revenue = soldFlowers
+  // console.log(allFlowersCount)
+  // console.log(overallSum)
+  // soldFlowers
+console.log(soldFlowers)
   res.render('admin/dashboard', {
     title: "Dashboard",
-    flowers: flowers
+    flowers: flowers,
+    allFlowersCount
+  })
+})
+
+router.get('/test', async(req, res) => {
+  res.render('admin/test', {
+    title: "Test"
   })
 })
 

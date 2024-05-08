@@ -1,0 +1,49 @@
+<form class="border p-3 w-75  rounded-1" action="/flowers/comment/${id}" method="post" enctype="application/x-www-form-urlencoded">
+    <div class="row mb-3">
+      <label for="title" class="col-sm-2 col-form-label">Nomi:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="title" id="title">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="description" class="col-sm-2 col-form-label">Batafsil ma'lumot:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="description" id="description">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="imageUrl" class="col-sm-2 col-form-label">Rasm manzili:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="imageUrl" id="imageUrl">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="amount" class="col-sm-2 col-form-label">Miqdor:</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" name="amount" id="amount">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="status" class="col-sm-2 col-form-label">Xolat:</label>
+        <select class="form-select" name="status" aria-label="Default select example">
+          <option value="available">One</option>
+          <option value="unavailable">Two</option>
+          <option value="pending">Three</option>
+          <option value="delivered">Three</option>
+          <option value="rejected">Three</option>
+        </select>
+    </div>
+    <div class="row mb-3">
+      <label for="price" class="col-sm-2 col-form-label">Narx: (So'm)</label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" name="price" id="price">
+      </div>
+    </div>
+    <div class="form-floating mb-3">
+      <textarea class="form-control" name="comment" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+      <label for="floatingTextarea">Izoh qoldirish</label>
+    </div>
+    </div>
+    <button type="submit" class="btn btn-primary align-content-end">Jo'natish</button>
+    <button type="button" class="comment-cancel-btn btn btn-secondary">Bekor qilish</button>
+</form>

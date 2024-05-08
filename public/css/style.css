@@ -44,7 +44,7 @@ button {
     box-sizing: border-box;
     transition: all 0.3s ease;
     background: rgba(243, 217, 217, 0.616);
-    border-radius: 1rem;
+    /* border-radius: 1rem; */
 
 }
 .card:hover {
@@ -56,14 +56,15 @@ button {
     height: 170px;
     object-position: center;
     background-position: center;
-    border-top-right-radius: 1rem;
-    border-top-left-radius: 1rem;
+    /* border-top-right-radius: 1rem; */
+    /* border-top-left-radius: 1rem; */
     box-sizing: border-box;
 
 }
 
 .card-body,.card-footer, .comment_section {
     padding: 0.5rem;
+    /* padding-bottom: 0; */
 }
 .card-footer a {
     display: inline-block;
@@ -179,4 +180,7 @@ button:disabled{
 
 .buy-btn {
     font-style: 1px ;
+}
+.flower_add-form {
+    transform: scale(0.);
 }

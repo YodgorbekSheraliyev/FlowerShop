@@ -57,7 +57,7 @@ router.post('/flower/buy/:id', async (req, res) => {
       req.flash("error", "Bu gul sotib bo'lingan")
       return res.redirect('/flowers/all')
     }else{
-      await Reservation.create({fullName, region, phone: phoneNumber, productId:id, flowerId: id, amount:1 })
+      await Reservation.create({fullName, region, phone: phoneNumber, productId:id, flowerId: id, amount:1,})
        return res.redirect('/flowers/all')
     }
 })
