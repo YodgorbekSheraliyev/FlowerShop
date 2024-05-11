@@ -14,11 +14,11 @@ if(wrapper !== null){
       <div class="row mb-3 email_wrapper">
         <label for="inputEmail3" class="col-sm-2 col-form-label">Email:</label>
         <div class="col-sm-10">
-          <input type="email" class="form-control comment_email" name="email" id="inputEmail3">
+          <input required type="email" class="form-control comment_email" name="email" id="inputEmail3">
         </div>
       </div>
-      <div class="row w-100 form-floating mb-3">
-        <textarea class="form-control comment_text" name="comment" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+      <div class="row form-floating mb-3">
+        <textarea required class="form-control comment_text"  name="comment" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
         <label for="floatingTextarea">Izoh qoldirish</label>
       </div>
       </div>
@@ -26,21 +26,33 @@ if(wrapper !== null){
       <button type="button" class="comment-cancel-btn btn btn-secondary">Bekor qilish</button>
     </form>
     `
-    // const email = document.querySelector('.comment_email')
-    // const textArea = document.querySelector('.comment_text')
-    // const commentForm = document.querySelector('.comment_form')
-    // const emailDiv = document.querySelector('.email_wrapper')
-    // const errorText = document.createElement('h3')
     
-    // if(!email.value || !textArea.value){
-    //   commentForm.insertBefore(errorText,emailDiv)
-    // }
-    body.append(comment)
-    const cancelButton = document.querySelector(".comment-cancel-btn")
-    cancelButton.addEventListener('click', removeComment)
-    function removeComment(){
+    // if(!email || !textArea){
+      //   commentForm.insertBefore(errorText,emailDiv)
+      // }
+      body.append(comment)
+      const cancelButton = document.querySelector(".comment-cancel-btn")
+      cancelButton.addEventListener('click', removeComment)
+      // const email = document.querySelector('.comment_email')
+      // const textArea = document.querySelector('.comment_text')
+      const commentForm = document.querySelector('.comment_form')
+      const emailDiv = document.querySelector('.email_wrapper')
+      const errorText = document.createElement('h3').innerText = "Barchasini to'ldiring"
+      console.log(email.value)
+       
+      if(!email.value || !textArea.value){
+        commentForm.insertBefore(errorText, emailDiv)
+      }
+      function removeComment(){
       body.removeChild(comment)
     }
+    const form = new FormData(commentForm)
+    const email = form.get("email")
+    const textarea = form.get("comment")
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      
+    })
   })
 }
 
@@ -50,7 +62,7 @@ if(addFlowerBtn !== null){
     const modal = document.createElement('div')
     modal.classList.add("position-absolute", "position-absolute","top-50","start-50","translate-middle","d-flex","justify-content-center", "w-100", "border-5", "p-3", "py-5")
     modal.innerHTML =  `
-    <form class=" w-75 bg-light border top-0  p-3 rounded-1" action="/flowers/create" method="post" enctype="application/x-www-form-urlencoded">
+    <form class=" w-75 bg-light border top-0  p-3 rounded-1" action="/admins/flower/create" method="post" enctype="application/x-www-form-urlencoded">
     <h2 class='fs-4 text-center mb-2 fw-bold'>Gul qo'shish</h2>
       <div class="row mb-3">
         <label for="title" class="col-sm-2 col-form-label">Nomi:</label>
