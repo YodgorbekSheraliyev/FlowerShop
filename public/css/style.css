@@ -88,14 +88,14 @@ button {
 .comment_section.active {
     display: block;
 }
-.comment_form {
+/* .comment_form {
     display: block;
     width: 100%;
     display: flex;
     align-items: flex-end;
     gap: 5px;
     margin: 0.rem 0 0 0;
-}
+} */
 .comment {
     display: block;
     margin: left;

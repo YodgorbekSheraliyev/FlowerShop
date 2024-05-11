@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         default: 1
       },
+      status: {
+        type: DataTypes.ENUM(["pending", "delivered", "rejected",]),
+        default: "pending"
+      },
       productId: {
         type: DataTypes.INTEGER,
         allowNull: false

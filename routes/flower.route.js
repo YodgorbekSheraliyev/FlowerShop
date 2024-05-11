@@ -72,16 +72,5 @@ router.post('/flowers/comment/:id', async(req, res) => {
      res.redirect('/flowers/all')
 })
 
-router.post("/admin/flower/create", async (req, res) => {
-  const { title, imageUrl, description, amount, price, status } = req.body;
-  const flower = await Flower.create({title, imageUrl, description, amount, price, status,});
-  res.redirect('/admin/dashboard')
-});
-
-router.post('/admin/flower/delete/:id', async (req, res) => {
-    const id = req.params.id
-    const flower = await Flower.destroy({where: {id: id, }})
-    return res.redirect('/flower/all')
-})
 
 module.exports = router;

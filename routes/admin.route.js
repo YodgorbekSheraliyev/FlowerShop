@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const router = Router();
 const db = require("../models");
-const { where } = require("sequelize");
 const Admin = db.admin;
 const Flower = db.flower;
 const Reservation = db.reservation
@@ -50,29 +49,43 @@ router.post('/admins/flower/create', async(req, res) => {
   return res.status(201).redirect('/admins/dashboard')
 })
 
-router.delete('/admins/flower/delete/:id', async(req, res) => {
+router.post('/admins/flower/delete/:id', async(req, res) => {
   const id = +req.params.id
   await Flower.destroy({where: {id}})
-  return res.status(200).send({message: "deleted"})
+  return res.status(200).redirect('/admins/dashboard')
 })
 
 router.get('/admins/dashboard', async (req, res) => {
-  const flowers = await Flower.findAll({raw: true, include: ["reservations"], nest: true})
-  const allFlowersCount = await Flower.count()
-  const soldFlowers = await Flower.findAll({raw: true, where: {status: "delivered"}})
-  let overallSum = 0
+  const flowers = await Flower.findAll({raw:true, include:["reservations"], nest: true})
+  const reservations = await Reservation.findAll({where:{status: "delivered"}, raw:true, include: ["flower"], nest:true})
+  const allReservationsCount = await Reservation.count()
 
+  async function Loop(){
+  let total = 0
+  let flowerCount = 0
 
-  // const revenue = soldFlowers
-  // console.log(allFlowersCount)
-  // console.log(overallSum)
-  // soldFlowers
-console.log(soldFlowers)
+  for(let i=0; i< reservations.length; i++){
+    const reservation = reservations[i]
+    const flower =  await Flower.findOne({where:{id : reservation.flowerId}})
+    total += flower.price
+  }
+  
+  for(let j=0; j< flowers.length; j++){
+    const currentflower = flowers[j]
+    const flower =  await Flower.findOne({where:{id : currentflower.id}})
+    flowerCount += flower.amount
+  }
+  
   res.render('admin/dashboard', {
     title: "Dashboard",
     flowers: flowers,
-    allFlowersCount
+    allFlowersCount: flowerCount,
+    allReservationsCount,
+    sum: total
   })
+ }
+
+ Loop()
 })
 
 router.get('/test', async(req, res) => {

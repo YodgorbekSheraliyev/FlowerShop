@@ -27,22 +27,24 @@
                <td> {{id}}</td>
                <td> {{title}}</td>
                <td> {{amount}}</td>
-               <td> {{price}}</td>
+               <td> {{price}} so'm</td>
                <td> {{reservations.amount}}</td>
                <td class=" d-flex justify-content-center gap-2">
                 <form action="/admins/flower/edit" method="get">
                   <button type="submit" class="btn p-1 btn-success">Tahrirlash</button>
                 </form>
-                <form action="/admins/flower/delete/:{{id}}" method="post">
+                <form action="/admins/flower/delete/{{id}}" method="post">
                   <button type="submit" class="btn p-1 btn-danger ">O'chirish</button>
                 </form>
                </td>
                </tr>
             {{/each}}
+               <tr>
+                 <td colspan="3">Jami</td>
+                 <td > {{allFlowersCount}} </td>
+                 <td > {{sum}} so'm</td>
+                 <td > {{allReservationsCount}}</td>
+               </tr>
             </tbody>
-            <tr>
-              <td colspan="3">Jami</td>
-              <td colspan="4"> 50</td>
-            </tr>
     </table>
 </div>
