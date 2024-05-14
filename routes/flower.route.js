@@ -1,16 +1,21 @@
-const { Router, raw } = require("express");
+const { Router } = require("express");
 const db = require('../models');
+// const { where } = require("sequelize");
 // const { where } = require("sequelize");
 
 const router = Router();
 const Flower = db.flower
 const Reservation = db.reservation
-const Comment = db.comment
+// const Comment = db.comment
 // const {Sequelize} = require('sequelize')
 // const sequelize = new Sequelize()
 // const Reservation = sequelize.define("efe")
-
-
+// async function run(){
+//   const flower = await Reservation.findByPk(1)
+//   // await flower.update('amount', 30000, )
+//   await flower.update
+//   ()
+// }
 router.get("/flowers/all", async (req, res) => {
   const limit = 4;
   const countFlowers = await Flower.count();
@@ -45,22 +50,29 @@ router.get('/flowers/buy/:id', async (req, res) => {
   })
 })
 
+
 router.post('/flower/buy/:id', async (req, res) => {
   const id = req.params.id
-    const flower = await Flower.findByPk(id, {raw: true})
-    const {fullName, phoneNumber, region} = req.body
-    if(!fullName || phoneNumber.lenght <13  || !region){
+    const flower = await Flower.findByPk(id)
+    const {fullName, phoneNumber, region, amount} = req.body
+    if(!fullName || phoneNumber.length <13  || !region){
       req.flash("error", "Barchasini to'ldiring iltimos!!!")
+      if(amount <=0){
+        req.flash('error', "Gul miqdori 0 va undan kichik bo'la olmaydi")
+      }
       return res.redirect('/flowers/buy/' + id)
     }
-    if (flower.amount <1) {
-      req.flash("error", "Bu gul sotib bo'lingan")
-      return res.redirect('/flowers/all')
+    if (flower.amount < amount){
+      req.flash("error", "Bu miqdorda gul sotib ololmaysiz.")
+      return res.redirect('/flowers/buy/' + id)
     }else{
-      await Reservation.create({fullName, region, phone: phoneNumber, productId:id, flowerId: id, amount:1,})
+      await Flower.update({amount: (flower.amount - amount)}, {where: {id: id}})
+      await Reservation.create({fullName, region, phone: phoneNumber, productId:id, flowerId: id, amount, status: "pending"})
        return res.redirect('/flowers/all')
     }
 })
+
+
 
 router.post('/flowers/comment/:id', async(req, res) => {
      const {email, comment} = req.body

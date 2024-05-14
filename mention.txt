@@ -11,7 +11,7 @@
 /admins/auth/register          GET
 /admins/auth/register          POST
 
-/admins/flower/edit            GET
+/admins/flower/edit/:id/:resid GET
 /admins/flower/create          POST
 /admins/flower/delete/:id      POST
 

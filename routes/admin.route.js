@@ -44,8 +44,8 @@ router.post("/admins/auth/register", async (req, res) => {
 });
 
 router.post('/admins/flower/create', async(req, res) => {
-  const {title, imageUrl, description, amount, price, status} = await req.body
-  const flower = await Flower.create(req.body, {returning: true})
+  // const {title, imageUrl, description, amount, price, status} = await req.body
+  const flower = await Flower.create({...req.body}, {returning: true})
   return res.status(201).redirect('/admins/dashboard')
 })
 
@@ -55,9 +55,34 @@ router.post('/admins/flower/delete/:id', async(req, res) => {
   return res.status(200).redirect('/admins/dashboard')
 })
 
+router.post('/admins/flower/edit/:id', async(req, res) => {
+  const id = +req.params.id
+  // await Flower.destroy({where: {id}})
+  return res.status(200).redirect('/admins/dashboard')
+})
+
+
+router.post('/admins/flower/edit/:id/:resid', async (req, res) => {
+  const id = req.params.id
+  const resId = req.params.resid
+    const flower = await Flower.findByPk(id)
+    const reservation = await Reservation.findByPk(resId)
+    console.log(reservation)
+    // const {price, amount, status} = req.body
+    // if(price == 0 || amount == 0 ){
+    //   return res.redirect('/admins/dashboard')
+    // }else{
+    //   // await Flower.update({amount}, {where: {id: id}})
+    //   // const reservation = await Reservation.
+    //   await Reservation.update({price, productId:id, flowerId: id, amount, status}, {where:{id: resId, }})
+    //    return res.redirect('/admins/dashboard')
+    // }
+})
+
 router.get('/admins/dashboard', async (req, res) => {
-  const flowers = await Flower.findAll({raw:true, include:["reservations"], nest: true})
-  const reservations = await Reservation.findAll({where:{status: "delivered"}, raw:true, include: ["flower"], nest:true})
+  const flowers = await Flower.findAll({raw:true, include:['reservations'], nest: true, sort: ['id', 'ASC']})
+  // console.log(flowers)
+  const reservations = await Reservation.findAll({raw:true, include: ["flower"], nest:true})
   const allReservationsCount = await Reservation.count()
 
   async function Loop(){
@@ -79,6 +104,7 @@ router.get('/admins/dashboard', async (req, res) => {
   res.render('admin/dashboard', {
     title: "Dashboard",
     flowers: flowers,
+    reservations: reservations,
     allFlowersCount: flowerCount,
     allReservationsCount,
     sum: total
