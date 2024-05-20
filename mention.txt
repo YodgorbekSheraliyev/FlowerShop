@@ -1,21 +1,23 @@
-/flowers/all                   GET
+/flowers/all                         GET
+      
+/flowers/buy/:id                     GET
+/flowers/buy/:id                     POST
+      
+/flowers/comment/id                  POST
+      
+/admins/auth/login                   GET
+/admins/auth/login                   POST
+      
+/admins/auth/register                GET
+/admins/auth/register                POST
 
-/flowers/buy/:id               GET
-/flowers/buy/:id               POST
+/admins/reservation/edit/:id/:resid  GET
 
-/flowers/comment/id            POST
-
-/admins/auth/login             GET
-/admins/auth/login             POST
-
-/admins/auth/register          GET
-/admins/auth/register          POST
-
-/admins/flower/edit/:id/:resid GET
-/admins/flower/create          POST
-/admins/flower/delete/:id      POST
-
-/admins/dashboard              GET
+/admins/flower/edit/:id/:resid       GET
+/admins/flower/create                POST
+/admins/flower/delete/:id            POST
+      
+/admins/dashboard                    GET
 
 
 

@@ -57,48 +57,62 @@ router.post('/admins/flower/delete/:id', async(req, res) => {
 
 router.post('/admins/flower/edit/:id', async(req, res) => {
   const id = +req.params.id
-  // await Flower.destroy({where: {id}})
+  const {title, amount, description, imageUrl, price, status } = req.body
+  if(!title || !amount || ! description || !imageUrl || ! price || !status){
+  return res.status(400).redirect('/admins/dashboard')
+  }
+  await Flower.update({title, amount, description, imageUrl, price, status, }, {where: {id}})
   return res.status(200).redirect('/admins/dashboard')
 })
 
 
-router.post('/admins/flower/edit/:id/:resid', async (req, res) => {
+router.post('/admins/reservation/edit/:id/:resid', async (req, res) => {
   const id = req.params.id
   const resId = req.params.resid
     const flower = await Flower.findByPk(id)
     const reservation = await Reservation.findByPk(resId)
-    console.log(reservation)
-    // const {price, amount, status} = req.body
-    // if(price == 0 || amount == 0 ){
-    //   return res.redirect('/admins/dashboard')
-    // }else{
-    //   // await Flower.update({amount}, {where: {id: id}})
-    //   // const reservation = await Reservation.
-    //   await Reservation.update({price, productId:id, flowerId: id, amount, status}, {where:{id: resId, }})
-    //    return res.redirect('/admins/dashboard')
-    // }
+    const {amount, price, status} = req.body
+
+      const rev = await Reservation.update({status: "delivered", where: {id: resId}})
+      if(amount > reservation.amount){
+        const difference = amount - reservation.amount
+        if(flower.amount < difference){
+          return res.redirect('/admins/dashboard')
+        }else{
+          await Flower.update({amount: (flower.amount - difference),}, { where: {id}})
+          await Reservation.update({status: "delivered", amount}, {where:{id: resId}})
+        }
+      }else if(amount < reservation.amount){
+        await Flower.update({amount: (flower.amount + difference), where: {id}})
+        await Reservation.update({status: "delivered", amount})
+      }else{
+        await Reservation.update({status: "delivered", amount})
+      }
+
 })
 
 router.get('/admins/dashboard', async (req, res) => {
-  const flowers = await Flower.findAll({raw:true, include:['reservations'], nest: true, sort: ['id', 'ASC']})
-  // console.log(flowers)
+  const flowers = await Flower.findAll({raw:true,})
   const reservations = await Reservation.findAll({raw:true, include: ["flower"], nest:true})
-  const allReservationsCount = await Reservation.count()
 
   async function Loop(){
   let total = 0
   let flowerCount = 0
+  let allReservationsCount = 0
+  let allFlowersSum = 0
 
   for(let i=0; i< reservations.length; i++){
     const reservation = reservations[i]
     const flower =  await Flower.findOne({where:{id : reservation.flowerId}})
-    total += flower.price
+    total += (reservation.amount * flower.price)
+    allReservationsCount += reservation.amount
   }
   
   for(let j=0; j< flowers.length; j++){
     const currentflower = flowers[j]
     const flower =  await Flower.findOne({where:{id : currentflower.id}})
     flowerCount += flower.amount
+    allFlowersSum += (flower.amount * flower.price)
   }
   
   res.render('admin/dashboard', {
@@ -107,7 +121,8 @@ router.get('/admins/dashboard', async (req, res) => {
     reservations: reservations,
     allFlowersCount: flowerCount,
     allReservationsCount,
-    sum: total
+    reservationSum: total,
+    allFlowersSum
   })
  }
 
