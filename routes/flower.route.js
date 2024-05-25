@@ -1,21 +1,11 @@
 const { Router } = require("express");
 const db = require('../models');
-// const { where } = require("sequelize");
-// const { where } = require("sequelize");
 
 const router = Router();
 const Flower = db.flower
 const Reservation = db.reservation
-// const Comment = db.comment
-// const {Sequelize} = require('sequelize')
-// const sequelize = new Sequelize()
-// const Reservation = sequelize.define("efe")
-// async function run(){
-//   const flower = await Reservation.findByPk(1)
-//   // await flower.update('amount', 30000, )
-//   await flower.update
-//   ()
-// }
+const Comment = db.comment
+
 router.get("/flowers/all", async (req, res) => {
   const limit = 4;
   const countFlowers = await Flower.count();
@@ -29,6 +19,7 @@ router.get("/flowers/all", async (req, res) => {
     raw: true,
     limit,
     offset: (currentPage - 1) * limit,
+    order: [["id","ASC"]]
   });
   res.render("flowers/all-flowers", {
     title: "All flowers",

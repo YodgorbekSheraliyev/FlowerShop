@@ -4,6 +4,7 @@ const db = require("../models");
 const Admin = db.admin;
 const Flower = db.flower;
 const Reservation = db.reservation
+const Comment = db.comment
 
 router.get("/admins/auth/login", async (req, res) => {
   res.render("admins/auth/login", {
@@ -44,8 +45,7 @@ router.post("/admins/auth/register", async (req, res) => {
 });
 
 router.post('/admins/flower/create', async(req, res) => {
-  // const {title, imageUrl, description, amount, price, status} = await req.body
-  const flower = await Flower.create({...req.body}, {returning: true})
+  await Flower.create({...req.body})
   return res.status(201).redirect('/admins/dashboard')
 })
 
@@ -71,28 +71,38 @@ router.post('/admins/reservation/edit/:id/:resid', async (req, res) => {
   const resId = req.params.resid
     const flower = await Flower.findByPk(id)
     const reservation = await Reservation.findByPk(resId)
-    const {amount, price, status} = req.body
+    const {amount, status} = req.body
+    const difference = amount - reservation.amount
+      if(status == 'rejected'){
+          if(reservation.status == 'rejected'){
+            return res.redirect('/admins/dashboard')
+          }
+          await Flower.update({amount: flower.amount + reservation.amount}, {where: {id}})
+          await Reservation.update({status}, {where:{id: resId}})
+          return res.redirect('/admins/dashboard')
 
-      const rev = await Reservation.update({status: "delivered", where: {id: resId}})
+      }
       if(amount > reservation.amount){
-        const difference = amount - reservation.amount
         if(flower.amount < difference){
           return res.redirect('/admins/dashboard')
         }else{
           await Flower.update({amount: (flower.amount - difference),}, { where: {id}})
-          await Reservation.update({status: "delivered", amount}, {where:{id: resId}})
+          await Reservation.update({status, amount}, {where:{id: resId}})
+          res.redirect('/admins/dashboard')
         }
       }else if(amount < reservation.amount){
-        await Flower.update({amount: (flower.amount + difference), where: {id}})
-        await Reservation.update({status: "delivered", amount})
+        await Flower.update({amount: (flower.amount + Math.abs(difference))},{ where: {id}})
+        await Reservation.update({status, amount}, {where: {id: resId}})
+        res.redirect('/admins/dashboard')
       }else{
-        await Reservation.update({status: "delivered", amount})
+        await Reservation.update({status, amount}, {where: {id: resId}})
+        res.redirect('/admins/dashboard')
       }
 
 })
 
 router.get('/admins/dashboard', async (req, res) => {
-  const flowers = await Flower.findAll({raw:true,})
+  const flowers = await Flower.findAll({raw:true})
   const reservations = await Reservation.findAll({raw:true, include: ["flower"], nest:true})
 
   async function Loop(){
@@ -104,17 +114,22 @@ router.get('/admins/dashboard', async (req, res) => {
   for(let i=0; i< reservations.length; i++){
     const reservation = reservations[i]
     const flower =  await Flower.findOne({where:{id : reservation.flowerId}})
-    total += (reservation.amount * flower.price)
-    allReservationsCount += reservation.amount
+    if(reservation.status == 'delivered'){
+      total += (reservation.amount * flower.price)
+      allReservationsCount += reservation.amount
+    }
   }
   
   for(let j=0; j< flowers.length; j++){
-    const currentflower = flowers[j]
-    const flower =  await Flower.findOne({where:{id : currentflower.id}})
+    const currentFlower = flowers[j]
+    const [comments, reservations] = await Promise.all([Comment.findAll({ raw: true, where: { flowerId: currentFlower.id } }),
+      Reservation.findAll({ raw: true, where: { flowerId: currentFlower.id } })])
+    const flower = { ...currentFlower, reservations, comments };
     flowerCount += flower.amount
     allFlowersSum += (flower.amount * flower.price)
+    flowers[j] = flower
+
   }
-  
   res.render('admin/dashboard', {
     title: "Dashboard",
     flowers: flowers,

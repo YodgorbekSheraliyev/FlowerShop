@@ -33,8 +33,6 @@ if(wrapper !== null){
       }
       const cancelButton = document.querySelector(".comment-cancel-btn")
       cancelButton.addEventListener('click', removeComment)
-      // const email = document.querySelector('.comment_email')
-      // const textArea = document.querySelector('.comment_text')
       const commentForm = document.querySelector('.comment_form')
       const emailDiv = document.querySelector('.email_wrapper')
       const errorText = document.createElement('h3').innerText = "Barchasini to'ldiring"
@@ -58,6 +56,7 @@ if(wrapper !== null){
 
 if(addFlowerBtn !== null){
   addFlowerBtn.addEventListener('click', () => {
+    const commentBtn = document.querySelector('.comment__view-btn')
     const modal = document.createElement('div')
     modal.classList.add("position-absolute", "position-absolute","top-50","start-50","translate-middle","d-flex","justify-content-center", "w-100", "border-5", "p-3", "py-5")
     modal.innerHTML =  `
@@ -130,7 +129,7 @@ if(adminTBody !== null){
     const status = e.target.dataset.status
 
       const modal = document.createElement('div')
-      modal.classList.add("position-absolute", "position-absolute","bottom-50","start-50","translate-middle","d-flex","justify-content-center", "w-100", "border-5", "p-3", "py-5")
+      modal.classList.add("position-fixed", "position-absolute","top-50","start-50","translate-middle","d-flex","justify-content-center", "w-100", "border-5", "p-3", "py-5")
       modal.innerHTML =  `
       <form class=" w-75 bg-light border top-0  p-3 rounded-1" action="/admins/reservation/edit/${id}/${resid}" method="post" enctype="application/x-www-form-urlencoded">
       <h2 class='fs-4 text-center mb-2 fw-bold'>Buyurtmani boshqarish</h2>
@@ -143,15 +142,13 @@ if(adminTBody !== null){
         <div class="row mb-3">
           <label for="price" class="col-sm-2 col-form-label">Narx:</label>
           <div class="col-sm-10">
-            <input type="number" class="form-control" value="${price}" name="price" id="price">
+            <input type="number" class="form-control" readonly value="${price}" name="price" id="price">
           </div>
         </div>
         <div class="row mb-3 d-flex">
           <label for="status" class="col-sm-2 col-form-label">Xolat:</label>
             <div class="col-sm-10">
               <select class="form-select" name="status" value="${status}" aria-label="Default select example">
-                <option value="available">Mavjud</option>
-                <option value="unavailable">Mavjud emas</option>
                 <option value="pending">Kutilmoqda</option>
                 <option value="delivered">Yetkazilgan</option>
                 <option value="rejected">Bekor qilingan</option>
@@ -187,9 +184,10 @@ if(adminTBody2 !== null){
     const amount = e.target.dataset.amount
     const price = e.target.dataset.price
     const status = e.target.dataset.status
+    const comments = e.target.dataset.comments
 
       const modal = document.createElement('div')
-      modal.classList.add("position-absolute", "position-absolute","top-50","start-50","translate-middle","d-flex","justify-content-center", "w-100", "border-5", "p-3", "py-5")
+      modal.classList.add( "position-fixed","top-50","start-50","translate-middle","d-flex","justify-content-center", "w-100", "border-5", "p-3", "py-5")
       modal.innerHTML =  `
       <form class=" w-75 bg-light border top-0  p-3 rounded-1" action="/admins/flower/edit/${id}" method="post" enctype="application/x-www-form-urlencoded">
       <h2 class='fs-4 text-center mb-2 fw-bold'>Gul qo'shish</h2>
@@ -241,6 +239,13 @@ if(adminTBody2 !== null){
         <button type="button" class="add_flower-cancel-btn btn btn-secondary">Bekor qilish</button>
     </form>
       `
+
+    const commentModal = document.createElement('div')
+    commentModal.classList.add("position-fixed","top-50","start-50","translate-middle","d-flex","justify-content-center", "w-100", "border-5", "p-3", "py-5")
+    commentModal.innerHTML = comments
+    if(e.target.dataset.comment){
+      body.append(commentModal)
+    }
     if(e.target.dataset.edit){
       body.append(modal)
     }
