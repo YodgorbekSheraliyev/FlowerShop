@@ -16,6 +16,8 @@
 /admins/flower/edit/:id/:resid       GET
 /admins/flower/create                POST
 /admins/flower/delete/:id            POST
+
+/admins/comment/delete/:id            POST
       
 /admins/dashboard                    GET
 

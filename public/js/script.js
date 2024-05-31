@@ -38,15 +38,10 @@ if(wrapper !== null){
       const errorText = document.createElement('h3').innerText = "Barchasini to'ldiring"
       console.log(email.value)
        
-      if(!email.value || !textArea.value){
-        commentForm.insertBefore(errorText, emailDiv)
-      }
       function removeComment(){
       body.removeChild(comment)
     }
     const form = new FormData(commentForm)
-    const email = form.get("email")
-    const textarea = form.get("comment")
     form.addEventListener('submit', (e) => {
       e.preventDefault()
     })
@@ -257,3 +252,11 @@ if(adminTBody2 !== null){
   })
 
 }
+
+async function fetchData(){
+const res = await fetch('http://localhost:3000/admins/dashboard')
+const data = await res.json()
+console.log(data)
+}
+
+fetchData()

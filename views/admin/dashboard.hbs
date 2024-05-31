@@ -1,7 +1,7 @@
 <div class="container">
    <nav class="navbar bg-body-tertiary bg-body-secondary">
   <div class="container-fluid p-0 ">
-    <a href="/flowers/all" class=" fs-1 text-black link-dark border  text-decoration-none">Bosh sahifa</a>
+    <a href="/flowers/all" class=" fs-1 text-black  text-decoration-none">Bosh sahifa</a>
     <span class="navbar-brand mb-0 fs-1 fw-bolder">Dashboard</span>
     <button  class="btn btn-primary add_flower-btn">+ Qo'shish</button>
   </div>
@@ -60,6 +60,7 @@
                 <td>Nomi</td>
                 <td>Miqdori</td>
                 <td>Narxi</td>
+                <td>Izohlar</td>
                 <td>Boshqarish</td>
             </tr>
             
@@ -72,10 +73,18 @@
                <td> {{amount}}</td>
                <td> {{price}} so'm</td>
                <td>
-                   {{comments}}
+                   {{#if comments}}
+                   <ul class=" list-group">
+                    {{#each comments}}
+                   <li><b>Email: {{email}},  </b><p>{{text}}</p> <form action="/admins/comment/delete/{{id}}" class="fs-6" method="post"><button class="btn btn-danger" type="submit">O'chirish</button></form></li>
+                   {{/each}}
+                   </ul>
+                   {{else}}
+                   <h2 class=" fs-6 fw-bold ">Hozricha izoh yo'q</h2>
+                   {{/if}}
                </td>
                <td class=" d-flex justify-content-center gap-2">
-                  <button type="submit" class="btn comment__view-btn p-1 btn-info" data-comment="comment" >Izohlar</button>
+                  {{!-- <button type="submit" class="btn comment__view-btn p-1 btn-info" data-comment="comment" >Izohlar</button> --}}
                   <button type="submit" class="btn edit-btn p-1 btn-success"  data-edit="edit" data-id="{{id}}"  data-title="{{title}}" data-description="{{description}}" data-imageurl="{{imageUrl}}" data-amount="{{amount}}" data-price="{{price}}" data-status="{{status}}">Tahrirlash</button>
                 <form action="/admins/flower/delete/{{id}}" method="post">
                   <button type="submit" class="btn p-1 btn-danger ">O'chirish</button>

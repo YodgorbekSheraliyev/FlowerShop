@@ -1,5 +1,13 @@
 <div class="container d-flex justify-content-center">
   <form class="border p-3 w-75  rounded-1" action="/admins/auth/login" method="post">
+     <h2 class="fw-bolder text-center mb-2">Kirish</h2>
+
+  {{#if error}}
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+       <div> {{error}} </div>
+    </div>
+  {{/if}}
     <div class="row mb-3">
       <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
       <div class="col-sm-10">
@@ -13,5 +21,6 @@
       </div>
     </div>
     <button type="submit" class="btn btn-primary">Sign in</button>
+    <a class=" text-decoration-none mx-4" href="/admins/auth/register">Akkaunt yo'qmi? Bosing</a>
   </form>
 </div>

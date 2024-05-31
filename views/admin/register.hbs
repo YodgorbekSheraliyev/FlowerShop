@@ -1,24 +1,12 @@
-{{!-- 
-  <div class="container form_wrapper">
-    <form action="/admin/auth/register" method="POST">
-      <label for="firstName">First Name:</label>
-      <input type="text" id="firstName" name="firstName" required>
-
-      <label for="lastName">Last Name:</label>
-      <input type="text" id="lastName" name="lastName" required>
-
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
-
-      <button type="submit">Register</button>
-    </form>
-  </div>
- --}}
 <div class="container d-flex justify-content-center">
-  <form class="border p-3 w-75  rounded-1" action="/admins/auth/login" method="post">
+  <form class="border p-3 w-75  rounded-1" action="/admins/auth/register" method="post">
+     <h2 class="fw-bolder text-center mb-2">Registratsiya</h2>
+    {{#if error}}
+      <div class="alert alert-danger d-flex align-items-center" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+        <div> {{error}} </div>
+      </div>
+    {{/if}}
     <div class="row mb-3">
       <label for="firstName" class="col-sm-2 col-form-label">Firstname</label>
       <div class="col-sm-10">
@@ -43,6 +31,7 @@
         <input type="password" class="form-control" name="password" id="inputPassword3">
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" class="btn btn-primary">Sign up</button>
+    <a class=" text-decoration-none mx-4 " href="/admins/auth/login">Akkaunt bormi? Bosing</a>
   </form>
 </div>

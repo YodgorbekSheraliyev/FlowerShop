@@ -7,40 +7,54 @@ const Reservation = db.reservation
 const Comment = db.comment
 
 router.get("/admins/auth/login", async (req, res) => {
-  res.render("admins/auth/login", {
+  res.render("admin/login", {
     title: "Login",
+    error: req.flash('error')
   });
 });
 
 router.post("/admins/auth/login", async (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password)
   if (!email || !password) {
+    req.flash('error', "Email va passwordni kiritsh talab qilinadi")
     return res.redirect("/admins/auth/login");
   } else {
     const admin = await Admin.findOne({ where: { email } });
-    if (password === admin.password) {
+    if (admin && password === admin.password) {
       req.session.admin = admin;
       req.session.save((err) => {
         if (err) throw err;
         res.redirect("/admins/dashboard");
       });
     }
+      res.redirect('/admins/auth/login')
   }
-  res.render("admin/login", {
-    title: "Login",
-  });
 });
 
 router.get("/admins/auth/register", async (req, res) => {
-    res.render('admin/register')
+    res.render('admin/register',  {
+      title: "Register",
+      error: req.flash('error')
+    })
 });
 router.post("/admins/auth/register", async (req, res) => {
     const{firstName, lastName, email, password} = req.body
     if(!firstName || !lastName || !email || !password){
+        req.flash('error', 'Barchasini to\'lidiring !!!')
         return res.redirect('/admins/auth/register')
     }else {
-        await Admin.create(req.body)
-        return res.redirect('/admins/dashboard')
+        const existAdmin = await Admin.findOne({where: {email}})
+        if(existAdmin){
+          req.flash('error', 'Bu akkaunt ro\'yhatdan o\'tgan !!!')
+          return res.redirect('/admins/auth/register')
+        }
+        const admin = await Admin.create(req.body)
+        req.session.admin = admin
+        req.session.save(err => {
+          if(err) throw err
+          return res.redirect('/admins/dashboard')
+        })
     }
 });
 
@@ -65,7 +79,10 @@ router.post('/admins/flower/edit/:id', async(req, res) => {
   return res.status(200).redirect('/admins/dashboard')
 })
 
-
+router.post('/admins/comment/delete/:id', async (req, res) => {
+  await Comment.destroy({where: {id: req.params.id}})
+  res.redirect('/admins/dashboard')
+})
 router.post('/admins/reservation/edit/:id/:resid', async (req, res) => {
   const id = req.params.id
   const resId = req.params.resid
@@ -132,7 +149,7 @@ router.get('/admins/dashboard', async (req, res) => {
   }
   res.render('admin/dashboard', {
     title: "Dashboard",
-    flowers: flowers,
+    flowers:flowers,
     reservations: reservations,
     allFlowersCount: flowerCount,
     allReservationsCount,

@@ -7,6 +7,7 @@ const Reservation = db.reservation
 const Comment = db.comment
 
 router.get("/flowers/all", async (req, res) => {
+  const admin = req.session.admin
   const limit = 4;
   const countFlowers = await Flower.count();
   const totalPages = Math.ceil(countFlowers / limit);
@@ -28,6 +29,7 @@ router.get("/flowers/all", async (req, res) => {
     isNotPrevExist,
     nextPage,
     prevPage,
+    admin
   });
 });
 

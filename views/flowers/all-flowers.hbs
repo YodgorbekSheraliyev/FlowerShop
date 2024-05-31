@@ -2,6 +2,10 @@
     <h2 class="flowershop_title">
         Flowershop
     </h2>
+      {{#if admin}}
+          <a href="/admins/dashboard" class="text-decoration-none fw-bold text-end position-absolute top-0 mt-3"> <h2>Dashboard</h2> </a>
+      {{/if}}
+
     <div class="wrapper">
         {{#each flowers}}
             <div class="card">
