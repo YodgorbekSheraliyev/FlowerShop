@@ -33,14 +33,19 @@ app.use(flash())
 // Static folders
 app.use(express.static(path.join(__dirname, "public/css")))
 app.use(express.static(path.join(__dirname, "public/js")))
-app.use(express.static(path.join(__dirname, "uploads")))
 
 // Routes
 app.get('/', (req, res) => {
   res.redirect('/flowers/all')
 })
+
 app.use('/', require('./routes/flower.route'))
 app.use('/', require('./routes/admin.route'))
+app.use('/', (req, res) => {
+  res.render('flowers/404', {
+    title: "Page not found"
+  })
+})
 
 // Port
 const port = process.env.PORT || 3000
