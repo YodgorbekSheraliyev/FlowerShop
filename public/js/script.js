@@ -51,7 +51,6 @@ if(wrapper !== null){
 
 if(addFlowerBtn !== null){
   addFlowerBtn.addEventListener('click', () => {
-    const commentBtn = document.querySelector('.comment__view-btn')
     const modal = document.createElement('div')
     modal.classList.add("position-absolute", "position-absolute","top-50","start-50","translate-middle","d-flex","justify-content-center", "w-100", "border-5", "p-3", "py-5")
     modal.innerHTML =  `
@@ -117,6 +116,7 @@ if(addFlowerBtn !== null){
 
 if(adminTBody !== null){
   adminTBody.addEventListener('click', (e) => {
+    console.log(e.target)
     const id = e.target.dataset.id
     const resid = e.target.dataset.resid
     const amount = e.target.dataset.amount
@@ -156,7 +156,8 @@ if(adminTBody !== null){
         <button type="button" class="reservation__cancel-btn btn btn-secondary">Bekor qilish</button>
     </form>
       `
-    if(e.target.dataset.resedit){
+
+    if(e.target.dataset.resedit && status !== 'delivered'){
       body.append(modal)
     }
       const cancelBtn = document.querySelector('.reservation__cancel-btn')
@@ -164,6 +165,7 @@ if(adminTBody !== null){
       function removeModal(){
         body.removeChild(modal)
       }
+      
   })
 
 }
@@ -252,11 +254,3 @@ if(adminTBody2 !== null){
   })
 
 }
-
-async function fetchData(){
-const res = await fetch('http://localhost:3000/admins/dashboard')
-const data = await res.json()
-console.log(data)
-}
-
-fetchData()
