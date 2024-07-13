@@ -137,8 +137,14 @@ const getDashboardPage = async (req, res) => {
 
   async function Loop() {
     let total = 0;
+    let rejectedSum = 0;
+    let pendingSum = 0;
+    let deliveredSum = 0;
     let flowerCount = 0;
     let allReservationsCount = 0;
+    let allRejectedReservationsCount = 0;
+    let allPendingReservationsCount = 0;
+    let allDeliveredReservationsCount = 0;
     let allFlowersSum = 0;
 
     for (let i = 0; i < reservations.length; i++) {
@@ -146,9 +152,21 @@ const getDashboardPage = async (req, res) => {
       const flower = await Flower.findOne({
         where: { id: reservation.flowerId },
       });
-      if (reservation.status == "delivered") {
+      if (reservation.status == "delivered" || reservation.status == "pending" || reservation.status == "rejected") {
         total += reservation.amount * flower.price;
         allReservationsCount += reservation.amount;
+      }
+      if (reservation.status == "delivered") {
+        deliveredSum += reservation.amount * flower.price;
+        allDeliveredReservationsCount += reservation.amount;
+      }
+      if (reservation.status == "pending") {
+        pendingSum += reservation.amount * flower.price;
+        allPendingReservationsCount += reservation.amount;
+      }
+      if (reservation.status == "rejected") {
+        rejectedSum += reservation.amount * flower.price;
+        allRejectedReservationsCount += reservation.amount;
       }
     }
 
@@ -174,6 +192,14 @@ const getDashboardPage = async (req, res) => {
       allReservationsCount,
       reservationSum: total,
       allFlowersSum,
+      pendingSum,
+      rejectedSum,
+      deliveredSum,
+      allDeliveredReservationsCount,
+      allPendingReservationsCount,
+      allRejectedReservationsCount,
+      allFlowersSum,
+      getDashboardPage
     });
   }
 

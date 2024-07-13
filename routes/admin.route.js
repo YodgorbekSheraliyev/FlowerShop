@@ -11,6 +11,7 @@ const {
   editFlower,
   deleteComment,
   editReservation,
+  getDashboardPage
 } = require("../controllers/admin.controller");
 
 router.get("/admins/auth/login", getLoginPage);

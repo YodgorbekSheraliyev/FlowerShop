@@ -1,7 +1,6 @@
 <div class="container">
    <nav class="navbar bg-body-tertiary bg-body-secondary">
   <div class="container-fluid p-0 ">
-    <a href="/flowers/all" class=" fs-1 text-black  text-decoration-none">Bosh sahifa</a>
     <span class="navbar-brand mb-0 fs-1 fw-bolder">Dashboard</span>
     <button  class="btn btn-primary add_flower-btn">+ Qo'shish</button>
   </div>
@@ -39,6 +38,21 @@
                </tr>
             {{/each}}
                <tr>
+                 <td colspan="3">Jami bekor qilingan</td>
+                 <td > {{allRejectedReservationsCount}}</td>
+                 <td colspan="3"> {{rejectedSum}} so'm</td>
+               </tr>
+               <tr>
+                 <td colspan="3">Jami kutilayotgan</td>
+                 <td > {{allPendingReservationsCount}}</td>
+                 <td colspan="3"> {{pendingSum}} so'm</td>
+               </tr>
+               <tr>
+                 <td colspan="3">Jami yetkazilgan</td>
+                 <td > {{allDeliveredReservationsCount}}</td>
+                 <td colspan="3"> {{deliveredSum}} so'm</td>
+               </tr>
+               <tr>
                  <td colspan="3">Jami</td>
                  <td > {{allReservationsCount}}</td>
                  <td colspan="3"> {{reservationSum}} so'm</td>
@@ -70,15 +84,14 @@
                    {{#if comments}}
                    <ul class=" list-group">
                     {{#each comments}}
-                   <li><b>Email: {{email}},  </b><p>{{text}}</p> <form action="/admins/comment/delete/{{id}}" class="fs-6" method="post"><button class="btn btn-danger" type="submit">O'chirish</button></form></li>
+                   <li class=" d-flex justify-content-between" ><div><b class=" d-block mb-1">{{email}},</b> <p>{{text}}</p></div> <form action="/admins/comment/delete/{{id}}" class="fs-2" method="post"><button class="btn btn-danger" type="submit">O'chirish</button></form></li>
                    {{/each}}
                    </ul>
                    {{else}}
-                   <h2 class=" fs-6 fw-bold ">Hozricha izoh yo'q</h2>
+                   <h2 class=" fs-6 fw-bold ">Hozircha izoh yo'q</h2>
                    {{/if}}
                </td>
                <td class=" d-flex justify-content-center gap-2">
-                  {{!-- <button type="submit" class="btn comment__view-btn p-1 btn-info" data-comment="comment" >Izohlar</button> --}}
                   <button type="submit" class="btn edit-btn p-1 btn-success"  data-edit="edit" data-id="{{id}}"  data-title="{{title}}" data-description="{{description}}" data-imageurl="{{imageUrl}}" data-amount="{{amount}}" data-price="{{price}}" data-status="{{status}}">Tahrirlash</button>
                 <form action="/admins/flower/delete/{{id}}" method="post">
                   <button type="submit" class="btn p-1 btn-danger ">O'chirish</button>

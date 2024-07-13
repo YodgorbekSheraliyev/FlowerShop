@@ -11,9 +11,12 @@ const app = express();
 const hbsEngine = exphbs.create({
   defaultLayout: "main",
   extname: ".hbs",
-  helpers: function (date, format) {
-    return moment(date).format(format);
-  },
+  helpers: {
+    formatDate: function (date, format) {
+      return moment(date).format(format);
+    },
+    
+  }
 });
 
 // Environment Variable
