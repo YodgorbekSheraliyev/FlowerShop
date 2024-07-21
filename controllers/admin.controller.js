@@ -13,14 +13,17 @@ const getLoginPage = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
   if (!email || !password) {
     req.flash("error", "Email va passwordni kiritsh talab qilinadi");
     return res.redirect("/admins/auth/login");
   } else {
     const admin = await Admin.findOne({ where: { email } });
+    if(!admin) {
+      req.flash('error', "Bu admin ro'yhatdan o'tmagan")
+      return res.redirect("/admins/auth/login");
+    }
     if(password !== admin.password){
-      req.flash('error', "Password mos emas")
+      req.flash('error', "Password noto'g'ri")
       return res.redirect("/admins/auth/login");
     }
     if (admin && password === admin.password) {

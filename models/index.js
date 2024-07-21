@@ -13,6 +13,8 @@ db.reservation = require('./reservation.model')(sequelize, DataTypes)
 db.comment = require('./comment.model')(sequelize, DataTypes)
 db.sequelize = sequelize
 
+
+
 db.flower.hasMany(db.reservation, {as: "reservations", onDelete: "CASCADE", constraints: true})
 db.flower.hasMany(db.comment, {as: "comments", onDelete: "CASCADE", constraints: true})
 

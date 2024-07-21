@@ -18,6 +18,10 @@ const hbsEngine = exphbs.create({
     },
     formatNumber: function(number){
       return numFormat( "#,##0.###", number)
+    },
+    isRejected: function(status){
+      if(status === "rejected") return true
+      return false
     }
   }
 });
@@ -33,7 +37,7 @@ app.set('views', path.join('views'))
 // Middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-app.use(session({resave: true, saveUninitialized: false, secret: "weergw", cookie: {maxAge: 500000}}))
+app.use(session({resave: true, saveUninitialized: false, secret: "weergw", cookie: {maxAge: 10000000000, }}))
 app.use(flash())
 
 // Static folders

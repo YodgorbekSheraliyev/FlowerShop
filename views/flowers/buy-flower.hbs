@@ -25,12 +25,13 @@
       id="fullName"
       placeholder="John Doe"
     />
-     <label for="fullName">Phone</label>
+     <label for="fullName">Phone (+998901234567) </label>
     <input
-      type="phone"
+      type="number"
       name="phoneNumber"
       id="phoneNumber"
-      value="+998"
+      placeholder="+998"
+      pattern="[1-9]{2}-[0-9]{3}-[0-9]{2}-[0-9]{2}"
     />
     <label for="region">Region</label>
     <select name="region" id="region" class="form-select" aria-label="Default select example">

@@ -38,7 +38,11 @@
                <td> {{flower.price}} so'm</td>
                <td> {{status}}</td>
                <td class=" d-flex justify-content-center gap-2">
-                <button type="submit" class="btn edit-btn p-1 btn-success" data-resedit="edit" data-id="{{flower.id}}" data-resid="{{id}}"  data-amount="{{amount}}" data-price="{{flower.price}}" data-status="{{status}}">Tahrirlash</button>
+                {{#if (isRejected status)}}
+                <button type="submit" class="btn edit-btn p-1 btn-success disabled " disabled="true"  data-resedit="edit" data-id="{{flower.id}}" data-resid="{{id}}"  data-amount="{{amount}}" data-price="{{flower.price}}" data-status="{{status}}">Tahrirlash</button>
+                {{else}}
+                <button type="submit" class="btn edit-btn p-1 btn-success"  data-resedit="edit" data-id="{{flower.id}}" data-resid="{{id}}"  data-amount="{{amount}}" data-price="{{flower.price}}" data-status="{{status}}">Tahrirlash</button>
+                {{/if}}
                 <form action="/admins/flower/delete/{{id}}" method="post">
                   <button type="submit" class="btn p-1 btn-danger ">O'chirish</button>
                 </form>

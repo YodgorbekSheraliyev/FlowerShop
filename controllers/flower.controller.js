@@ -3,9 +3,8 @@ const Flower = db.flower
 const Reservation = db.reservation
 const Comment = db.comment
 
-
 const getFlowersPage = async (req, res) => {
-    const admin = req.session.admin
+  const admin = req.session.admin
     const limit = 4;
     const countFlowers = await Flower.count();
     const totalPages = Math.ceil(countFlowers / limit);
@@ -45,7 +44,7 @@ const getFlowersPage = async (req, res) => {
     const id = req.params.id
       const flower = await Flower.findByPk(id)
       const {fullName, phoneNumber, region, amount} = req.body
-      if(!fullName || phoneNumber.length <13  || !region){
+      if(!fullName || phoneNumber.length == 0  || !region){
         req.flash("error", "Barchasini to'ldiring iltimos!!!")
         if(amount <=0){
           req.flash('error', "Gul miqdori 0 va undan kichik bo'la olmaydi")
