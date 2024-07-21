@@ -1,8 +1,14 @@
 <div class="container">
    <nav class="navbar bg-body-tertiary bg-body-secondary">
   <div class="container-fluid p-0 ">
+    <a  href="/" class="navbar-brand mb-0 fs-1 fw-bolder">Bosh sahifa</a>
     <span class="navbar-brand mb-0 fs-1 fw-bolder">Dashboard</span>
-    <button  class="btn btn-primary add_flower-btn">+ Qo'shish</button>
+    <div class=" d-flex gap-1 ">
+      <form action="/admins/auth/logout" method="get">
+        <button class="btn btn-danger" type="submit">Chiqish</button>
+      </form>
+      <button  class="btn btn-primary add_flower-btn">+ Qo'shish</button>
+    </div>
   </div>
 </nav>
 
@@ -14,6 +20,7 @@
                 <td>Ism</td>
                 <td>Manzil</td>
                 <td>Buyurtma miqdori</td>
+                <td>Telefon raqam</td>
                 <td>Narxi</td>
                 <td>Buyurtma xolati</td>
                 <td>Boshqarish</td>
@@ -27,6 +34,7 @@
                <td> {{fullName}}</td>
                <td> {{region}}</td>
                <td> {{amount}}</td>
+               <td> {{phone}}</td>
                <td> {{flower.price}} so'm</td>
                <td> {{status}}</td>
                <td class=" d-flex justify-content-center gap-2">
@@ -40,22 +48,22 @@
                <tr>
                  <td colspan="3">Jami bekor qilingan</td>
                  <td > {{allRejectedReservationsCount}}</td>
-                 <td colspan="3"> {{rejectedSum}} so'm</td>
+                 <td colspan="3"> {{formatNumber rejectedSum}} so'm</td>
                </tr>
                <tr>
                  <td colspan="3">Jami kutilayotgan</td>
                  <td > {{allPendingReservationsCount}}</td>
-                 <td colspan="3"> {{pendingSum}} so'm</td>
+                 <td colspan="3"> {{formatNumber pendingSum}} so'm</td>
                </tr>
                <tr>
                  <td colspan="3">Jami yetkazilgan</td>
                  <td > {{allDeliveredReservationsCount}}</td>
-                 <td colspan="3"> {{deliveredSum}} so'm</td>
+                 <td colspan="3"> {{formatNumber deliveredSum}} so'm</td>
                </tr>
                <tr>
                  <td colspan="3">Jami</td>
                  <td > {{allReservationsCount}}</td>
-                 <td colspan="3"> {{reservationSum}} so'm</td>
+                 <td colspan="3"> {{formatNumber reservationSum}} so'm</td>
                </tr>
             </tbody>
     </table>
@@ -79,7 +87,7 @@
                <td> {{id}}</td>
                <td> {{title}}</td>
                <td> {{amount}}</td>
-               <td> {{price}} so'm</td>
+               <td> {{formatNumber price}} so'm</td>
                <td>
                    {{#if comments}}
                    <ul class=" list-group">
@@ -102,7 +110,7 @@
                <tr>
                  <td colspan="2">Jami</td>
                  <td > {{allFlowersCount}} </td>
-                 <td > {{allFlowersSum}} so'm</td>
+                 <td > {{formatNumber allFlowersSum}} so'm</td>
                  {{!-- <td > {{allReservationsCount}}</td> --}}
                </tr>
             </tbody>

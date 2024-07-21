@@ -20,6 +20,7 @@
     "express-handlebars": "^7.1.2",
     "express-session": "^1.18.0",
     "moment": "^2.30.1",
+    "number-formatter": "^1.2.0",
     "pg": "^8.11.5",
     "sequelize": "^6.37.3"
   }

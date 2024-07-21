@@ -11,12 +11,15 @@ const {
   editFlower,
   deleteComment,
   editReservation,
-  getDashboardPage
+  getDashboardPage,
+  logout
 } = require("../controllers/admin.controller");
+
 
 router.get("/admins/auth/login", getLoginPage);
 
 router.post("/admins/auth/login", login);
+router.get('/admins/auth/logout', logout)
 
 router.get("/admins/auth/register", getRegisterPage);
 router.post("/admins/auth/register", register);

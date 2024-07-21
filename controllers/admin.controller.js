@@ -5,10 +5,10 @@ const Reservation = db.reservation;
 const Comment = db.comment;
 
 const getLoginPage = async (req, res) => {
-  res.render("admin/login", {
-    title: "Login",
-    error: req.flash("error"),
-  });
+    res.render("admin/login", {
+      title: "Login",
+      error: req.flash("error"),
+    });
 };
 
 const login = async (req, res) => {
@@ -19,14 +19,19 @@ const login = async (req, res) => {
     return res.redirect("/admins/auth/login");
   } else {
     const admin = await Admin.findOne({ where: { email } });
+    if(password !== admin.password){
+      req.flash('error', "Password mos emas")
+      return res.redirect("/admins/auth/login");
+    }
     if (admin && password === admin.password) {
       req.session.admin = admin;
+      req.session.isAuthenticated = true
       req.session.save((err) => {
         if (err) throw err;
-        res.redirect("/admins/dashboard");
       });
+      return res.redirect("/admins/dashboard");
     }
-    res.redirect("/admins/auth/login");
+   return res.redirect("/admins/auth/login");
   }
 };
 
@@ -36,6 +41,11 @@ const getRegisterPage = async (req, res) => {
     error: req.flash("error"),
   });
 };
+
+const logout = async (req, res) => {
+  req.session.destroy()
+  res.redirect('/admins/auth/login')
+}
 
 const register = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
@@ -50,6 +60,7 @@ const register = async (req, res) => {
     }
     const admin = await Admin.create(req.body);
     req.session.admin = admin;
+    req.session.isAuthenticated = true
     req.session.save((err) => {
       if (err) throw err;
       return res.redirect("/admins/dashboard");
@@ -128,6 +139,8 @@ const editReservation = async (req, res) => {
 };
 
 const getDashboardPage = async (req, res) => {
+  const isAuthenticated = req.session.admin ? true: false
+  if(!isAuthenticated) return res.redirect('/admins/auth/login')
   const flowers = await Flower.findAll({ raw: true });
   const reservations = await Reservation.findAll({
     raw: true,
@@ -186,6 +199,7 @@ const getDashboardPage = async (req, res) => {
     }
     res.render("admin/dashboard", {
       title: "Dashboard",
+      isAuthenticated,
       flowers: flowers,
       reservations: reservations,
       allFlowersCount: flowerCount,
@@ -204,11 +218,13 @@ const getDashboardPage = async (req, res) => {
   }
 
   Loop();
+  
 };
 
 module.exports = {
   getLoginPage,
   login,
+  logout,
   getRegisterPage,
   register,
   createFlower,

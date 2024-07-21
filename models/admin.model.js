@@ -20,10 +20,16 @@ module.exports = (sequelize, DataTypes) => {
         uniquie: true
       },
       password: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
       }
     }, {timestamps: true});
+    // Admin.create({
+    //   firstName: "Test",
+    //   lastName: "Test",
+    //   email: "test@gmail.com",
+    //   password: "test"
+    // })
   
     return Admin;
   };

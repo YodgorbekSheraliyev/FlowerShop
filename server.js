@@ -5,6 +5,7 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const path = require('path')
 const db = require('./models');
+const numFormat = require('number-formatter')
 
 // Instances
 const app = express();
@@ -15,7 +16,9 @@ const hbsEngine = exphbs.create({
     formatDate: function (date, format) {
       return moment(date).format(format);
     },
-    
+    formatNumber: function(number){
+      return numFormat( "#,##0.###", number)
+    }
   }
 });
 
@@ -30,7 +33,7 @@ app.set('views', path.join('views'))
 // Middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-app.use(session({resave: false, saveUninitialized: false, secret: "weergw"}))
+app.use(session({resave: true, saveUninitialized: false, secret: "weergw", cookie: {maxAge: 500000}}))
 app.use(flash())
 
 // Static folders
