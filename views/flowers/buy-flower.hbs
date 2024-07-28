@@ -8,13 +8,22 @@
       <p class="detail-text"><b>Price:</b> {{flower.price}} so'm</p>
   
     </div>
-    <h3>Izohlar</h3> 
+    <h3>Izohlar</h3>
+    <ul>
+      {{#if comments}}
+        {{#each comments}}
+        <li><b>{{email}}</b>: {{text}}</li>
+      {{/each}}
+      {{else}}
+        <p>Hozircha izoh yo'q</p>
+      {{/if}}
+    </ul> 
   </div>
   <form action="/flower/buy/{{flower.id}}" class="buy-form" method="post" enctype="application/x-www-form-urlencoded">
   <h2 class="buy-form-title">Sotib olish uchun formani to'ldiring</h2>
   {{#if error}}
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
-  Barchasini to'ldiring
+    {{error}}
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
   {{/if}}

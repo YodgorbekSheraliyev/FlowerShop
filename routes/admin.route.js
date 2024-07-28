@@ -12,7 +12,8 @@ const {
   deleteComment,
   editReservation,
   getDashboardPage,
-  logout
+  logout,
+  getDashboardData
 } = require("../controllers/admin.controller");
 
 
@@ -32,5 +33,6 @@ router.post("/admins/comment/delete/:id", deleteComment);
 router.post("/admins/reservation/edit/:id/:resid", editReservation);
 
 router.get("/admins/dashboard", getDashboardPage);
+router.get("/admins/dashboard/data", getDashboardData);
 
 module.exports = router;

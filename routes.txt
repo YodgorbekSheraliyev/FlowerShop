@@ -21,6 +21,4 @@
       
 /admins/dashboard                    GET
 
-
-
-/test
+/admins/dashboard/data               GET 

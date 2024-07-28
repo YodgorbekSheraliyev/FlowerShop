@@ -5,10 +5,10 @@ const Reservation = db.reservation;
 const Comment = db.comment;
 
 const getLoginPage = async (req, res) => {
-    res.render("admin/login", {
-      title: "Login",
-      error: req.flash("error"),
-    });
+  res.render("admin/login", {
+    title: "Login",
+    error: req.flash("error"),
+  });
 };
 
 const login = async (req, res) => {
@@ -18,23 +18,23 @@ const login = async (req, res) => {
     return res.redirect("/admins/auth/login");
   } else {
     const admin = await Admin.findOne({ where: { email } });
-    if(!admin) {
-      req.flash('error', "Bu admin ro'yhatdan o'tmagan")
+    if (!admin) {
+      req.flash("error", "Bu admin ro'yhatdan o'tmagan");
       return res.redirect("/admins/auth/login");
     }
-    if(password !== admin.password){
-      req.flash('error', "Password noto'g'ri")
+    if (password !== admin.password) {
+      req.flash("error", "Password noto'g'ri");
       return res.redirect("/admins/auth/login");
     }
     if (admin && password === admin.password) {
       req.session.admin = admin;
-      req.session.isAuthenticated = true
+      req.session.isAuthenticated = true;
       req.session.save((err) => {
         if (err) throw err;
       });
       return res.redirect("/admins/dashboard");
     }
-   return res.redirect("/admins/auth/login");
+    return res.redirect("/admins/auth/login");
   }
 };
 
@@ -44,11 +44,6 @@ const getRegisterPage = async (req, res) => {
     error: req.flash("error"),
   });
 };
-
-const logout = async (req, res) => {
-  req.session.destroy()
-  res.redirect('/admins/auth/login')
-}
 
 const register = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
@@ -63,12 +58,17 @@ const register = async (req, res) => {
     }
     const admin = await Admin.create(req.body);
     req.session.admin = admin;
-    req.session.isAuthenticated = true
+    req.session.isAuthenticated = true;
     req.session.save((err) => {
       if (err) throw err;
-      return res.redirect("/admins/dashboard");
+      return res.redirect("/admins/auth/login");
     });
   }
+};
+
+const logout = async (req, res) => {
+  req.session.destroy();
+  res.redirect("/admins/auth/login");
 };
 
 const createFlower = async (req, res) => {
@@ -141,9 +141,73 @@ const editReservation = async (req, res) => {
   }
 };
 
+const getDashboardData = async (req, res) => {
+  const flowers = await Flower.findAll({ raw: true });
+  const reservations = await Reservation.findAll({
+    raw: true,
+    include: ["flower"],
+    nest: true,
+  });
+
+  async function Loop() {
+    let total = 0;
+    let rejectedSum = 0;
+    let pendingSum = 0;
+    let deliveredSum = 0;
+    let flowerCount = 0;
+    let allFlowersSum = 0;
+
+    for (let i = 0; i < reservations.length; i++) {
+      const reservation = reservations[i];
+      const flower = await Flower.findOne({
+        where: { id: reservation.flowerId },
+      });
+      if (
+        reservation.status == "delivered" ||
+        reservation.status == "pending" ||
+        reservation.status == "rejected"
+      ) {
+        total += reservation.amount * flower.price;
+      }
+      if (reservation.status == "delivered") {
+        deliveredSum += reservation.amount * flower.price;
+      }
+      if (reservation.status == "pending") {
+        pendingSum += reservation.amount * flower.price;
+      }
+      if (reservation.status == "rejected") {
+        rejectedSum += reservation.amount * flower.price;
+      }
+    }
+
+    for (let j = 0; j < flowers.length; j++) {
+      const currentFlower = flowers[j];
+      const [comments, reservations] = await Promise.all([
+        Comment.findAll({ raw: true, where: { flowerId: currentFlower.id } }),
+        Reservation.findAll({
+          raw: true,
+          where: { flowerId: currentFlower.id },
+        }),
+      ]);
+      const flower = { ...currentFlower, reservations, comments };
+      flowerCount += flower.amount;
+      allFlowersSum += flower.amount * flower.price;
+      flowers[j] = flower;
+    }
+
+    res.json({
+      allFlowersSum: JSON.stringify(allFlowersSum),
+      pendingSum: JSON.stringify(pendingSum),
+      rejectedSum: JSON.stringify(rejectedSum),
+      deliveredSum: JSON.stringify(deliveredSum),
+      flowers
+    });
+  }
+  Loop();
+};
 const getDashboardPage = async (req, res) => {
   const isAuthenticated = req.session.admin ? true: false
-  if(!isAuthenticated) return res.redirect('/admins/auth/login')
+  if (!isAuthenticated) return res.redirect("/admins/auth/login");
   const flowers = await Flower.findAll({ raw: true });
   const reservations = await Reservation.findAll({
     raw: true,
@@ -168,7 +232,11 @@ const getDashboardPage = async (req, res) => {
       const flower = await Flower.findOne({
         where: { id: reservation.flowerId },
       });
-      if (reservation.status == "delivered" || reservation.status == "pending" || reservation.status == "rejected") {
+      if (
+        reservation.status == "delivered" ||
+        reservation.status == "pending" ||
+        reservation.status == "rejected"
+      ) {
         total += reservation.amount * flower.price;
         allReservationsCount += reservation.amount;
       }
@@ -200,10 +268,11 @@ const getDashboardPage = async (req, res) => {
       allFlowersSum += flower.amount * flower.price;
       flowers[j] = flower;
     }
+
     res.render("admin/dashboard", {
       title: "Dashboard",
       isAuthenticated,
-      flowers: flowers,
+      flowers,
       reservations: reservations,
       allFlowersCount: flowerCount,
       allReservationsCount,
@@ -216,12 +285,10 @@ const getDashboardPage = async (req, res) => {
       allPendingReservationsCount,
       allRejectedReservationsCount,
       allFlowersSum,
-      getDashboardPage
     });
   }
 
   Loop();
-  
 };
 
 module.exports = {
@@ -236,4 +303,5 @@ module.exports = {
   deleteComment,
   editReservation,
   getDashboardPage,
+  getDashboardData,
 };

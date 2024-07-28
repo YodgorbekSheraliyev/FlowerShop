@@ -1,122 +1,168 @@
 <div class="container">
-   <nav class="navbar bg-body-tertiary bg-body-secondary">
-  <div class="container-fluid p-0 ">
-    <a  href="/" class="navbar-brand mb-0 fs-1 fw-bolder">Bosh sahifa</a>
-    <span class="navbar-brand mb-0 fs-1 fw-bolder">Dashboard</span>
-    <div class=" d-flex gap-1 ">
-      <form action="/admins/auth/logout" method="get">
-        <button class="btn btn-danger" type="submit">Chiqish</button>
-      </form>
-      <button  class="btn btn-primary add_flower-btn">+ Qo'shish</button>
+  <nav class="navbar bg-body-tertiary bg-body-secondary">
+    <div class="container-fluid p-0">
+      <a href="/" class="navbar-brand mb-0 fs-1 fw-bolder">Bosh sahifa</a>
+      <span class="navbar-brand mb-0 fs-1 fw-bolder">Dashboard</span>
+      <div class="d-flex gap-1">
+        <form action="/admins/auth/logout" method="get">
+          <button class="btn btn-danger" type="submit">Chiqish</button>
+        </form>
+        <button class="btn btn-primary add_flower-btn">+ Qo'shish</button>
+      </div>
     </div>
+  </nav>
+
+  <h2 class="text-center fs-3">Buyurtmalar</h2>
+  <table
+    class="table table-bordered table-striped table-responsive table-light"
+  >
+    <thead>
+      <tr>
+        <td>ID</td>
+        <td>Ism</td>
+        <td>Manzil</td>
+        <td>Buyurtma miqdori</td>
+        <td>Telefon raqam</td>
+        <td>Narxi</td>
+        <td>Buyurtma xolati</td>
+        <td>Boshqarish</td>
+      </tr>
+
+    </thead>
+    <tbody class="admin_tbody">
+      {{#each reservations}}
+        <tr>
+          <td> {{id}}</td>
+          <td> {{fullName}}</td>
+          <td> {{region}}</td>
+          <td> {{amount}}</td>
+          <td> {{phone}}</td>
+          <td> {{flower.price}} so'm</td>
+          <td> {{status}}</td>
+          <td class="d-flex justify-content-center gap-2">
+            {{#if (isRejectedOrDelivered status)}}
+              <button
+                type="submit"
+                class="btn p-1 btn-success disabled"
+                disabled="true"
+              >Tahrirlash</button>
+            {{else}}
+              <button
+                type="submit"
+                class="btn edit-btn p-1 btn-success"
+                data-resedit="edit"
+                data-id="{{flower.id}}"
+                data-resid="{{id}}"
+                data-amount="{{amount}}"
+                data-price="{{flower.price}}"
+                data-status="{{status}}"
+              >Tahrirlash</button>
+            {{/if}}
+
+          </td>
+        </tr>
+      {{/each}}
+      <tr>
+        <td colspan="3">Jami bekor qilingan</td>
+        <td colspan="2"> {{allRejectedReservationsCount}}</td>
+        <td colspan="3"> {{formatNumber rejectedSum}} so'm</td>
+      </tr>
+      <tr>
+        <td colspan="3">Jami kutilayotgan</td>
+        <td colspan="2"> {{allPendingReservationsCount}}</td>
+        <td colspan="3"> {{formatNumber pendingSum}} so'm</td>
+      </tr>
+      <tr>
+        <td colspan="3">Jami yetkazilgan</td>
+        <td colspan="2"> {{allDeliveredReservationsCount}}</td>
+        <td colspan="3"> {{formatNumber deliveredSum}} so'm</td>
+      </tr>
+      <tr>
+        <td colspan="3">Jami</td>
+        <td colspan="2"> {{allReservationsCount}}</td>
+        <td colspan="3"> {{formatNumber reservationSum}} so'm</td>
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <canvas id="myChart"></canvas>
   </div>
-</nav>
 
-    <h2 class=" text-center fs-3 ">Buyurtmalar</h2>
-    <table class="table table-bordered table-striped table-responsive table-light">
-            <thead >
-              <tr>
-                <td>ID</td>
-                <td>Ism</td>
-                <td>Manzil</td>
-                <td>Buyurtma miqdori</td>
-                <td>Telefon raqam</td>
-                <td>Narxi</td>
-                <td>Buyurtma xolati</td>
-                <td>Boshqarish</td>
-            </tr>
-            
-            </thead>
-            <tbody class="admin_tbody">
-              {{#each reservations}}
-               <tr>
-               <td> {{id}}</td>
-               <td> {{fullName}}</td>
-               <td> {{region}}</td>
-               <td> {{amount}}</td>
-               <td> {{phone}}</td>
-               <td> {{flower.price}} so'm</td>
-               <td> {{status}}</td>
-               <td class=" d-flex justify-content-center gap-2">
-                {{#if (isRejected status)}}
-                <button type="submit" class="btn edit-btn p-1 btn-success disabled " disabled="true"  data-resedit="edit" data-id="{{flower.id}}" data-resid="{{id}}"  data-amount="{{amount}}" data-price="{{flower.price}}" data-status="{{status}}">Tahrirlash</button>
-                {{else}}
-                <button type="submit" class="btn edit-btn p-1 btn-success"  data-resedit="edit" data-id="{{flower.id}}" data-resid="{{id}}"  data-amount="{{amount}}" data-price="{{flower.price}}" data-status="{{status}}">Tahrirlash</button>
-                {{/if}}
-                <form action="/admins/flower/delete/{{id}}" method="post">
-                  <button type="submit" class="btn p-1 btn-danger ">O'chirish</button>
-                </form>
-               </td>
-               </tr>
-            {{/each}}
-               <tr>
-                 <td colspan="3">Jami bekor qilingan</td>
-                 <td > {{allRejectedReservationsCount}}</td>
-                 <td colspan="3"> {{formatNumber rejectedSum}} so'm</td>
-               </tr>
-               <tr>
-                 <td colspan="3">Jami kutilayotgan</td>
-                 <td > {{allPendingReservationsCount}}</td>
-                 <td colspan="3"> {{formatNumber pendingSum}} so'm</td>
-               </tr>
-               <tr>
-                 <td colspan="3">Jami yetkazilgan</td>
-                 <td > {{allDeliveredReservationsCount}}</td>
-                 <td colspan="3"> {{formatNumber deliveredSum}} so'm</td>
-               </tr>
-               <tr>
-                 <td colspan="3">Jami</td>
-                 <td > {{allReservationsCount}}</td>
-                 <td colspan="3"> {{formatNumber reservationSum}} so'm</td>
-               </tr>
-            </tbody>
-    </table>
+  <h2 class="text-center fs-3">Barcha gullar</h2>
+  <table
+    class="table table-bordered table-striped table-responsive table-light"
+  >
+    <thead>
+      <tr>
+        <td>ID</td>
+        <td>Nomi</td>
+        <td>Miqdori</td>
+        <td>Narxi</td>
+        <td>Izohlar</td>
+        <td>Boshqarish</td>
+      </tr>
 
-    <h2 class=" text-center fs-3 ">Barcha gullar</h2>
-        <table class="table table-bordered table-striped table-responsive table-light">
-            <thead >
-              <tr>
-                <td>ID</td>
-                <td>Nomi</td>
-                <td>Miqdori</td>
-                <td>Narxi</td>
-                <td>Izohlar</td>
-                <td>Boshqarish</td>
-            </tr>
-            
-            </thead>
-            <tbody id="admin_tbody2">
-              {{#each flowers}}
-               <tr>
-               <td> {{id}}</td>
-               <td> {{title}}</td>
-               <td> {{amount}}</td>
-               <td> {{formatNumber price}} so'm</td>
-               <td>
-                   {{#if comments}}
-                   <ul class=" list-group">
-                    {{#each comments}}
-                   <li class=" d-flex justify-content-between" ><div><b class=" d-block mb-1">{{email}},</b> <p>{{text}}</p></div> <form action="/admins/comment/delete/{{id}}" class="fs-2" method="post"><button class="btn btn-danger" type="submit">O'chirish</button></form></li>
-                   {{/each}}
-                   </ul>
-                   {{else}}
-                   <h2 class=" fs-6 fw-bold ">Hozircha izoh yo'q</h2>
-                   {{/if}}
-               </td>
-               <td class=" d-flex justify-content-center gap-2">
-                  <button type="submit" class="btn edit-btn p-1 btn-success"  data-edit="edit" data-id="{{id}}"  data-title="{{title}}" data-description="{{description}}" data-imageurl="{{imageUrl}}" data-amount="{{amount}}" data-price="{{price}}" data-status="{{status}}">Tahrirlash</button>
-                <form action="/admins/flower/delete/{{id}}" method="post">
-                  <button type="submit" class="btn p-1 btn-danger ">O'chirish</button>
-                </form>
-               </td>
-               </tr>
-            {{/each}}
-               <tr>
-                 <td colspan="2">Jami</td>
-                 <td > {{allFlowersCount}} </td>
-                 <td > {{formatNumber allFlowersSum}} so'm</td>
-                 {{!-- <td > {{allReservationsCount}}</td> --}}
-               </tr>
-            </tbody>
-    </table>
+    </thead>
+    <tbody id="admin_tbody2">
+      {{#each flowers}}
+        <tr>
+          <td> {{id}}</td>
+          <td> {{title}}</td>
+          <td> {{amount}}</td>
+          <td> {{formatNumber price}} so'm</td>
+          <td>
+            {{#if comments}}
+              <ul class="list-group">
+                {{#each comments}}
+                  <li class="d-flex justify-content-between"><div><b
+                        class="d-block mb-1"
+                      >{{email}},</b>
+                      <p>{{text}}</p></div>
+                    <form
+                      action="/admins/comment/delete/{{id}}"
+                      class="fs-2"
+                      method="post"
+                    ><button
+                        class="btn btn-danger"
+                        type="submit"
+                      >O'chirish</button></form></li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <h2 class="fs-6 fw-bold">Hozircha izoh yo'q</h2>
+            {{/if}}
+          </td>
+          <td class="d-flex justify-content-center gap-2">
+            <button
+              type="submit"
+              class="btn edit-btn p-1 btn-success"
+              data-edit="edit"
+              data-id="{{id}}"
+              data-title="{{title}}"
+              data-description="{{description}}"
+              data-imageurl="{{imageUrl}}"
+              data-amount="{{amount}}"
+              data-price="{{price}}"
+              data-status="{{status}}"
+            >Tahrirlash</button>
+            <form action="/admins/flower/delete/{{id}}" method="post">
+              <button
+                type="submit"
+                class="btn p-1 btn-danger"
+              >O'chirish</button>
+            </form>
+          </td>
+        </tr>
+      {{/each}}
+      <tr>
+        <td colspan="2">Jami</td>
+        <td> {{allFlowersCount}} </td>
+        <td> {{formatNumber allFlowersSum}} so'm</td>
+        {{!-- <td > {{allReservationsCount}}</td> --}}
+      </tr>
+    </tbody>
+  </table>
+  <div>
+    <canvas id="myChart2"></canvas>
+  </div>
 </div>

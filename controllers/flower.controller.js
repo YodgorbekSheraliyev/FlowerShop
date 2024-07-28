@@ -1,3 +1,4 @@
+const { Sequelize } = require('sequelize');
 const db = require('../models');
 const Flower = db.flower
 const Reservation = db.reservation
@@ -32,26 +33,29 @@ const getFlowersPage = async (req, res) => {
 
   const getFlowerPageById = async (req, res) => {
     const flower = await Flower.findByPk(req.params.id, {raw: true,})
-    console.log(flower)
+    const comments = await Comment.findAll({where: {flowerId: flower.id}, raw: true})
     res.render("flowers/buy-flower", {
       title: "Buy flower",
       flower: flower,
+      comments: comments,
       error: req.flash('error')
     })
   }
 
   const buyFlower = async (req, res) => {
     const id = req.params.id
-      const flower = await Flower.findByPk(id)
+      const flower = await Flower.findByPk(id, {raw: true})
       const {fullName, phoneNumber, region, amount} = req.body
-      if(!fullName || phoneNumber.length == 0  || !region){
+      console.log(req.body);
+      console.log(flower);
+      if(!fullName || !phoneNumber  || !region){
         req.flash("error", "Barchasini to'ldiring iltimos!!!")
-        if(amount <=0){
+        if(Number.parseInt(amount) <=0){
           req.flash('error', "Gul miqdori 0 va undan kichik bo'la olmaydi")
         }
         return res.redirect('/flowers/buy/' + id)
       }
-      if (flower.amount < amount){
+      if (flower.amount < Number.parseInt(amount)){
         req.flash("error", "Bu miqdorda gul sotib ololmaysiz.")
         return res.redirect('/flowers/buy/' + id)
       }else{
