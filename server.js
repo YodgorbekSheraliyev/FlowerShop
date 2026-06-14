@@ -6,7 +6,9 @@ const flash = require('connect-flash')
 const cors = require('cors')
 const path = require('path')
 const db = require('./models');
+const { seedDefaultData } = require('./seed');
 const numFormat = require('number-formatter')
+const moment = require('moment')
 
 // Instances
 const app = express();
@@ -39,7 +41,7 @@ app.set('views', path.join('views'))
 app.use(cors({}))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
-app.use(session({resave: true, saveUninitialized: false, secret: "weergw", cookie: {maxAge: 10000000000, }}))
+app.use(session({resave: true, saveUninitialized: false, secret: process.env.SESSION_SECRET, cookie: {maxAge: 10000000000, }}))
 app.use(flash())
 
 // Static folders
@@ -66,7 +68,8 @@ const port = process.env.PORT || 3000
 // Conntection to database
 async function connectPSQL(){
   try {
-    const connection = await db.sequelize.sync()
+    await db.sequelize.sync({ alter: true })
+    await seedDefaultData()
   } catch (error) {
     console.error(error.message)
   }

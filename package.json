@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "seed": "node seed.js"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +23,8 @@
     "express-session": "^1.18.0",
     "moment": "^2.30.1",
     "number-formatter": "^1.2.0",
-    "pg": "^8.11.5",
-    "sequelize": "^6.37.3"
+    "pg": "^8.21.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.8"
   }
 }

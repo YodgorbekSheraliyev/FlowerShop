@@ -21,19 +21,21 @@ module.exports = (sequelize, DataTypes) => {
       amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        default: 1
+        defaultValue: 1
       },
       status: {
-        type: DataTypes.ENUM(["pending", "delivered", "rejected",]),
-        default: "pending"
+        type: DataTypes.ENUM(["pending", "delivered", "rejected"]),
+        defaultValue: "pending"
       },
       productId: {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-     
+      flowerId: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      }
     }, {timestamps: true});
-  
+
     return Reservation;
   };
-  

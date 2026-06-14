@@ -17,13 +17,13 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        uniquie: true
+        unique: true
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false, 
+        allowNull: false,
       }
     }, {timestamps: true});
     return Admin;
   };
-  
+
